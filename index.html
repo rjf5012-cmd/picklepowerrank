@@ -2,39 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pickle League – Rating & Fair Teams</title>
+  <title>Pickle Power Rank | Fair Pickleball Team Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Track your pickleball league results, rank players over time, and automatically generate fair doubles teams based on ratings." />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="Pickleball power ranking tool that builds fair doubles teams based on skill ratings." />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css?v=10" />
 </head>
+
 <body>
+
   <header class="app-header">
-    <h1>Pickle League</h1>
-    <p>Track records, rank players, and auto-generate fair doubles teams.</p>
+    <h1>Pickle Power Rank</h1>
+    <p>Track rankings • Build fair doubles teams • Dominate the kitchen</p>
   </header>
 
   <main class="app-main">
+    
+    <!-- Navigation Tabs -->
     <nav class="tabs">
-      <button class="tab-button active" data-tab="players-tab">Players & Ratings</button>
+      <button class="tab-button active" data-tab="players-tab">Players</button>
       <button class="tab-button" data-tab="matches-tab">Record Match</button>
       <button class="tab-button" data-tab="teams-tab">Generate Teams</button>
     </nav>
 
-    <!-- Players & Ratings -->
+    <!-- PLAYERS TAB -->
     <section id="players-tab" class="tab-content active">
       <h2>Players & Ratings</h2>
+
       <form id="add-player-form" class="card">
         <h3>Add Player</h3>
         <div class="field">
           <label for="player-name">Name</label>
-          <input type="text" id="player-name" placeholder="Player name" required />
+          <input type="text" id="player-name" placeholder="Player Name" required />
         </div>
         <button type="submit" class="primary-btn">Add Player</button>
       </form>
 
       <section class="card">
-        <h3>Current Rankings</h3>
-        <p class="hint">Ratings start at 1500 and move up/down with wins and losses.</p>
+        <h3>Leaderboard</h3>
         <table class="players-table">
           <thead>
             <tr>
@@ -45,21 +51,19 @@
               <th>L</th>
             </tr>
           </thead>
-          <tbody id="players-table-body">
-            <!-- Filled by script.js -->
-          </tbody>
+          <tbody id="players-table-body"></tbody>
         </table>
       </section>
     </section>
 
-    <!-- Record Match -->
+    <!-- RECORD MATCH TAB -->
     <section id="matches-tab" class="tab-content">
       <h2>Record Match</h2>
       <form id="record-match-form" class="card">
-        <p class="hint">Pick 4 players, assign them to Team A and Team B, then select the winner.</p>
+        <p class="hint">Pick players → Assign to Team A & Team B → Choose winner</p>
 
         <div class="field">
-          <label>Team A (2 players)</label>
+          <label>Team A</label>
           <div class="team-select">
             <select id="team-a-player-1" required></select>
             <select id="team-a-player-2" required></select>
@@ -67,7 +71,7 @@
         </div>
 
         <div class="field">
-          <label>Team B (2 players)</label>
+          <label>Team B</label>
           <div class="team-select">
             <select id="team-b-player-1" required></select>
             <select id="team-b-player-2" required></select>
@@ -87,38 +91,31 @@
 
       <section class="card">
         <h3>Recent Matches</h3>
-        <ul id="matches-list" class="matches-list">
-          <!-- Filled by script.js -->
-        </ul>
+        <ul id="matches-list" class="matches-list"></ul>
       </section>
     </section>
 
-    <!-- Generate Teams (Doubles) -->
+    <!-- GENERATE TEAMS TAB -->
     <section id="teams-tab" class="tab-content">
-      <h2>Generate Fair Doubles Teams</h2>
+      <h2>Generate Fair Doubles</h2>
+
       <section class="card">
-        <p class="hint">
-          Check which players showed up this week, then generate doubles teams (pairs of 2).
-          Works best with an even number of players.
-        </p>
-        <div id="teams-player-list" class="player-checkbox-list">
-          <!-- Filled by script.js -->
-        </div>
-        <button id="generate-teams-btn" class="primary-btn">Generate Doubles Teams</button>
+        <p class="hint">Select who showed up → Auto create fair pairings</p>
+        <div id="teams-player-list" class="player-checkbox-list"></div>
+        <button id="generate-teams-btn" class="primary-btn">Generate Teams</button>
       </section>
 
       <section class="card" id="teams-result" style="display:none;">
-        <h3>Suggested Doubles Pairings</h3>
-        <ul id="pairs-result" class="pairs-list">
-          <!-- Filled by script.js -->
-        </ul>
+        <h3>Suggested Doubles Teams</h3>
+        <ul id="pairs-result" class="pairs-list"></ul>
         <p class="hint small" id="pairs-summary"></p>
       </section>
     </section>
+
   </main>
 
   <footer class="app-footer">
-    <p>Data is stored locally in your browser for now. We can move this to a real backend later.</p>
+    ⚡ Pickle Power Rank — Rankings built with real match results!
   </footer>
 
   <script src="script.js"></script>
