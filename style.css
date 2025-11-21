@@ -5,17 +5,20 @@
 }
 
 :root {
-  --bg: #0b1724;
-  --card: #101c2b;
-  --accent: #2ecc71;
-  --accent-soft: rgba(46, 204, 113, 0.15);
-  --text: #f5f7fa;
-  --muted: #9aa5b5;
-  --border: #25354a;
-  --danger: #e74c3c;
+  --navy: #0b2141;
+  --navy-dark: #061329;
+  --navy-light: #14335f;
+  --navy-soft: #e7edf7;
+  --white: #ffffff;
+  --accent: #1f7ae0;
+  --accent-soft: rgba(31, 122, 224, 0.12);
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border-subtle: #e5e7eb;
+  --border-strong: #cbd5e1;
   --radius-lg: 16px;
   --radius-md: 10px;
-  --shadow-soft: 0 14px 35px rgba(0, 0, 0, 0.4);
+  --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.12);
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
 }
@@ -26,8 +29,8 @@ body {
   padding: 0;
   height: 100%;
   font-family: var(--font-sans);
-  background: radial-gradient(circle at top, #182b40 0, #050812 55%, #020309 100%);
-  color: var(--text);
+  background: #f3f4f8;
+  color: var(--text-main);
 }
 
 body {
@@ -35,58 +38,80 @@ body {
   flex-direction: column;
 }
 
+/* Header */
+
 .app-header {
-  padding: 24px 16px 12px;
+  padding: 24px 16px 20px;
   text-align: center;
+  background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+  color: var(--white);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.45);
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 2rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  font-weight: 700;
 }
 
 .app-header p {
-  margin: 6px 0 0;
-  color: var(--muted);
+  margin: 8px 0 0;
+  color: #d1d5db;
   font-size: 0.95rem;
 }
 
+/* Main layout */
+
 .app-main {
-  max-width: 960px;
+  max-width: 980px;
   width: 100%;
   margin: 0 auto 24px;
   padding: 0 16px 24px;
   flex: 1;
+  transform: translateY(-14px);
+}
+
+/* Tabs */
+
+.tabs {
+  display: inline-flex;
+  background: var(--white);
+  border-radius: 999px;
+  padding: 4px;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-soft);
+  margin: 0 auto 20px;
+  gap: 4px;
 }
 
 .tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 16px;
-  gap: 6px;
   flex-wrap: wrap;
 }
 
 .tab-button {
-  border: 1px solid var(--border);
-  background: rgba(8, 16, 30, 0.85);
-  color: var(--muted);
-  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 8px 16px;
   border-radius: 999px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.16s ease;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .tab-button.active {
-  background: var(--accent-soft);
-  color: var(--text);
-  border-color: var(--accent);
+  background: var(--navy);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
 }
 
 .tab-button:hover:not(.active) {
-  border-color: var(--accent-soft);
+  background: #f9fafb;
 }
 
 .tab-content {
@@ -97,24 +122,32 @@ body {
   display: block;
 }
 
+/* Headings */
+
 h2 {
   font-size: 1.4rem;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  color: var(--navy-dark);
 }
 
 h3 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   margin: 0 0 8px;
+  color: var(--navy);
 }
 
+/* Card */
+
 .card {
-  background: linear-gradient(145deg, #111d2c, #0b141f);
+  background: var(--white);
   border-radius: var(--radius-lg);
   padding: 16px 18px 14px;
   box-shadow: var(--shadow-soft);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-subtle);
   margin-bottom: 16px;
 }
+
+/* Form fields */
 
 .field {
   margin-bottom: 12px;
@@ -123,7 +156,7 @@ h3 {
 label {
   display: block;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
@@ -132,18 +165,23 @@ select {
   width: 100%;
   padding: 8px 10px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  background: #070d16;
-  color: var(--text);
+  border: 1px solid var(--border-strong);
+  background: #f9fafb;
+  color: var(--text-main);
   font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.15s ease;
 }
 
 input[type="text"]:focus,
 select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.3);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 1px var(--accent-soft);
 }
+
+/* Buttons */
 
 .primary-btn {
   display: inline-flex;
@@ -152,24 +190,24 @@ select:focus {
   border-radius: 999px;
   padding: 8px 18px;
   border: none;
-  background: linear-gradient(135deg, #2ecc71, #1abc9c);
-  color: #031014;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  color: #f9fafb;
   font-weight: 600;
   cursor: pointer;
   font-size: 0.95rem;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 .primary-btn:hover {
   transform: translateY(-1px);
   filter: brightness(1.03);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.45);
 }
 
 .primary-btn:active {
   transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.4);
 }
 
 /* Players table */
@@ -178,27 +216,35 @@ select:focus {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.players-table thead {
+  background: var(--navy-soft);
 }
 
 .players-table th,
 .players-table td {
-  padding: 6px 8px;
-  border-bottom: 1px solid #1d2938;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-subtle);
   text-align: left;
 }
 
 .players-table th {
-  font-weight: 500;
-  color: var(--muted);
+  font-weight: 600;
+  color: var(--navy);
   font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .players-table tbody tr:nth-child(even) {
-  background: rgba(5, 11, 20, 0.65);
+  background: #f9fafb;
 }
 
 .players-table tbody tr:hover {
-  background: rgba(46, 204, 113, 0.08);
+  background: #eef2ff;
 }
 
 /* Match list */
@@ -211,8 +257,8 @@ select:focus {
 }
 
 .matches-list li {
-  padding: 6px 0;
-  border-bottom: 1px solid #1d2938;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   gap: 8px;
@@ -220,7 +266,7 @@ select:focus {
 
 .matches-list span.label {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* Team selects */
@@ -234,18 +280,28 @@ select:focus {
   flex: 1;
 }
 
+/* Radios */
+
 .radio-group {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
   font-size: 0.9rem;
 }
 
-.radio-group input {
-  margin-right: 4px;
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-main);
+  cursor: pointer;
 }
 
-/* Generate teams */
+.radio-group input {
+  accent-color: var(--accent);
+}
+
+/* Generate teams – player checkboxes */
 
 .player-checkbox-list {
   display: grid;
@@ -260,12 +316,21 @@ select:focus {
   gap: 6px;
   margin-bottom: 2px;
   cursor: pointer;
-  color: var(--text);
+  color: var(--text-main);
+  padding: 4px 6px;
+  border-radius: 999px;
+  transition: background-color 0.15s ease;
+}
+
+.player-checkbox-list label:hover {
+  background-color: #eef2ff;
 }
 
 .player-checkbox-list input[type="checkbox"] {
-  accent-color: #2ecc71;
+  accent-color: var(--accent);
 }
+
+/* Legacy teams grid (kept in case you re-use it somewhere) */
 
 .teams-result-grid {
   display: grid;
@@ -275,6 +340,7 @@ select:focus {
 
 .teams-result-grid h4 {
   margin: 0 0 4px;
+  color: var(--navy);
 }
 
 .teams-result-grid ul {
@@ -286,7 +352,7 @@ select:focus {
 
 .team-rating {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* Pairs list (doubles output) */
@@ -299,8 +365,8 @@ select:focus {
 }
 
 .pairs-list li {
-  padding: 6px 0;
-  border-bottom: 1px solid #1d2938;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   gap: 8px;
@@ -308,14 +374,14 @@ select:focus {
 
 .pairs-list span.label {
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* Utilities */
 
 .hint {
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   margin: 0 0 10px;
 }
 
@@ -323,18 +389,31 @@ select:focus {
   font-size: 0.8rem;
 }
 
+/* Footer */
+
 .app-footer {
   text-align: center;
-  padding: 10px 16px 18px;
+  padding: 12px 16px 18px;
   font-size: 0.8rem;
-  color: var(--muted);
-  border-top: 1px solid #101623;
-  background: radial-gradient(circle at top, #0b1320 0, #02040a 100%);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  background: #ffffff;
 }
 
-@media (max-width: 600px) {
+/* Responsive tweaks */
+
+@media (max-width: 720px) {
+  .app-main {
+    padding: 0 12px 20px;
+  }
+
+  .tabs {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .card {
-    padding: 14px 12px;
+    padding: 14px 14px 12px;
   }
 
   .team-select {
@@ -343,6 +422,11 @@ select:focus {
 
   .tab-button {
     flex: 1 1 auto;
-    justify-content: center;
+    text-align: center;
+  }
+
+  .matches-list li {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
