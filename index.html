@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pickle League – Rating & Fair Teams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Track your pickleball league results, rank players over time, and automatically generate fair teams based on ratings." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Pickle League</h1>
+    <p>Track records, rank players, and auto-generate fair teams.</p>
+  </header>
+
+  <main class="app-main">
+    <nav class="tabs">
+      <button class="tab-button active" data-tab="players-tab">Players & Ratings</button>
+      <button class="tab-button" data-tab="matches-tab">Record Match</button>
+      <button class="tab-button" data-tab="teams-tab">Generate Teams</button>
+    </nav>
+
+    <!-- Players & Ratings -->
+    <section id="players-tab" class="tab-content active">
+      <h2>Players & Ratings</h2>
+      <form id="add-player-form" class="card">
+        <h3>Add Player</h3>
+        <div class="field">
+          <label for="player-name">Name</label>
+          <input type="text" id="player-name" placeholder="Player name" required />
+        </div>
+        <button type="submit" class="primary-btn">Add Player</button>
+      </form>
+
+      <section class="card">
+        <h3>Current Rankings</h3>
+        <p class="hint">Ratings start at 1500 and move up/down with wins and losses.</p>
+        <table class="players-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player</th>
+              <th>Rating</th>
+              <th>W</th>
+              <th>L</th>
+            </tr>
+          </thead>
+          <tbody id="players-table-body">
+            <!-- Filled by script.js -->
+          </tbody>
+        </table>
+      </section>
+    </section>
+
+    <!-- Record Match -->
+    <section id="matches-tab" class="tab-content">
+      <h2>Record Match</h2>
+      <form id="record-match-form" class="card">
+        <p class="hint">Pick 4 players, assign them to Team A and Team B, then select the winner.</p>
+
+        <div class="field">
+          <label>Team A (2 players)</label>
+          <div class="team-select">
+            <select id="team-a-player-1" required></select>
+            <select id="team-a-player-2" required></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Team B (2 players)</label>
+          <div class="team-select">
+            <select id="team-b-player-1" required></select>
+            <select id="team-b-player-2" required></select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Winner</label>
+          <div class="radio-group">
+            <label><input type="radio" name="winner" value="A" required /> Team A</label>
+            <label><input type="radio" name="winner" value="B" required /> Team B</label>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-btn">Save Match</button>
+      </form>
+
+      <section class="card">
+        <h3>Recent Matches</h3>
+        <ul id="matches-list" class="matches-list">
+          <!-- Filled by script.js -->
+        </ul>
+      </section>
+    </section>
+
+    <!-- Generate Teams -->
+    <section id="teams-tab" class="tab-content">
+      <h2>Generate Fair Teams</h2>
+      <section class="card">
+        <p class="hint">
+          Check which players showed up this week, then generate teams.
+          Works best with an even number of players.
+        </p>
+        <div id="teams-player-list" class="player-checkbox-list">
+          <!-- Filled by script.js -->
+        </div>
+        <button id="generate-teams-btn" class="primary-btn">Generate Teams</button>
+      </section>
+
+      <section class="card" id="teams-result" style="display:none;">
+        <h3>Suggested Teams</h3>
+        <div class="teams-result-grid">
+          <div>
+            <h4>Team A</h4>
+            <ul id="team-a-result"></ul>
+            <p class="team-rating">Total rating: <span id="team-a-rating"></span></p>
+          </div>
+          <div>
+            <h4>Team B</h4>
+            <ul id="team-b-result"></ul>
+            <p class="team-rating">Total rating: <span id="team-b-rating"></span></p>
+          </div>
+        </div>
+        <p class="hint small" id="teams-diff"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Data is stored locally in your browser for now. We can move this to a real backend later.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
