@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>Pickle League – Rating & Fair Teams</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Track your pickleball league results, rank players over time, and automatically generate fair teams based on ratings." />
+  <meta name="description" content="Track your pickleball league results, rank players over time, and automatically generate fair doubles teams based on ratings." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="app-header">
     <h1>Pickle League</h1>
-    <p>Track records, rank players, and auto-generate fair teams.</p>
+    <p>Track records, rank players, and auto-generate fair doubles teams.</p>
   </header>
 
   <main class="app-main">
@@ -93,35 +93,26 @@
       </section>
     </section>
 
-    <!-- Generate Teams -->
+    <!-- Generate Teams (Doubles) -->
     <section id="teams-tab" class="tab-content">
-      <h2>Generate Fair Teams</h2>
+      <h2>Generate Fair Doubles Teams</h2>
       <section class="card">
         <p class="hint">
-          Check which players showed up this week, then generate teams.
+          Check which players showed up this week, then generate doubles teams (pairs of 2).
           Works best with an even number of players.
         </p>
         <div id="teams-player-list" class="player-checkbox-list">
           <!-- Filled by script.js -->
         </div>
-        <button id="generate-teams-btn" class="primary-btn">Generate Teams</button>
+        <button id="generate-teams-btn" class="primary-btn">Generate Doubles Teams</button>
       </section>
 
       <section class="card" id="teams-result" style="display:none;">
-        <h3>Suggested Teams</h3>
-        <div class="teams-result-grid">
-          <div>
-            <h4>Team A</h4>
-            <ul id="team-a-result"></ul>
-            <p class="team-rating">Total rating: <span id="team-a-rating"></span></p>
-          </div>
-          <div>
-            <h4>Team B</h4>
-            <ul id="team-b-result"></ul>
-            <p class="team-rating">Total rating: <span id="team-b-rating"></span></p>
-          </div>
-        </div>
-        <p class="hint small" id="teams-diff"></p>
+        <h3>Suggested Doubles Pairings</h3>
+        <ul id="pairs-result" class="pairs-list">
+          <!-- Filled by script.js -->
+        </ul>
+        <p class="hint small" id="pairs-summary"></p>
       </section>
     </section>
   </main>
