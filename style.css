@@ -289,6 +289,28 @@ select:focus {
   color: var(--muted);
 }
 
+/* Pairs list (doubles output) */
+
+.pairs-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.pairs-list li {
+  padding: 6px 0;
+  border-bottom: 1px solid #1d2938;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pairs-list span.label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 /* Utilities */
 
 .hint {
