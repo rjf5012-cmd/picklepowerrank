@@ -161,94 +161,96 @@ function renderMatchesList() {
   });
 }
 
-// ----- Team generation -----
+// ----- Doubles team generation (pairs of 2) -----
 
-function generateBalancedTeams(selectedIds) {
-  const n = selectedIds.length;
-  if (n % 2 !== 0) {
-    throw new Error("Need an even number of players to generate fair teams.");
+// Generate all possible pairings (perfect matchings) and pick the set of pairs
+// where the total pair strengths are as close together as possible.
+function generateBalancedPairs(selectedIds) {
+  if (selectedIds.length % 2 !== 0) {
+    throw new Error("Need an even number of players to generate doubles teams.");
   }
-  const teamSize = n / 2;
 
-  // Brute force: all combinations of teamSize players as Team A
   const players = selectedIds.slice();
-  const best = { diff: Infinity, teamA: null, teamB: null };
 
-  function comboRecursive(startIndex, chosen) {
-    if (chosen.length === teamSize) {
-      const teamA = chosen;
-      const teamB = players.filter((id) => !teamA.includes(id));
+  let bestPairs = null;
+  let bestScore = Infinity;
 
-      const sumA = teamA.reduce(
-        (sum, id) => sum + getPlayerById(id).rating,
-        0
-      );
-      const sumB = teamB.reduce(
-        (sum, id) => sum + getPlayerById(id).rating,
-        0
-      );
+  function backtrack(remaining, currentPairs) {
+    if (remaining.length === 0) {
+      // Evaluate current pairing set
+      const pairSums = currentPairs.map(([id1, id2]) => {
+        const r1 = getPlayerById(id1).rating;
+        const r2 = getPlayerById(id2).rating;
+        return r1 + r2;
+      });
 
-      const diff = Math.abs(sumA - sumB);
-      if (diff < best.diff) {
-        best.diff = diff;
-        best.teamA = teamA.slice();
-        best.teamB = teamB.slice();
+      const maxSum = Math.max(...pairSums);
+      const minSum = Math.min(...pairSums);
+      const spread = maxSum - minSum; // lower spread = more balanced
+
+      if (spread < bestScore) {
+        bestScore = spread;
+        bestPairs = currentPairs.map(pair => pair.slice());
       }
       return;
     }
 
-    for (let i = startIndex; i <= players.length - (teamSize - chosen.length); i++) {
-      chosen.push(players[i]);
-      comboRecursive(i + 1, chosen);
-      chosen.pop();
+    // pick the first remaining player, pair with each other remaining
+    const first = remaining[0];
+    for (let i = 1; i < remaining.length; i++) {
+      const partner = remaining[i];
+      const nextRemaining = remaining
+        .slice(1)
+        .filter((id) => id !== partner);
+
+      currentPairs.push([first, partner]);
+      backtrack(nextRemaining, currentPairs);
+      currentPairs.pop();
     }
   }
 
-  comboRecursive(0, []);
-  return best;
+  backtrack(players, []);
+
+  return {
+    pairs: bestPairs || [],
+    spread: bestScore
+  };
 }
 
-function renderGeneratedTeams(result) {
+function renderGeneratedPairs(result) {
   const container = document.getElementById("teams-result");
-  const teamAList = document.getElementById("team-a-result");
-  const teamBList = document.getElementById("team-b-result");
-  const teamARatingEl = document.getElementById("team-a-rating");
-  const teamBRatingEl = document.getElementById("team-b-rating");
-  const diffEl = document.getElementById("teams-diff");
+  const list = document.getElementById("pairs-result");
+  const summary = document.getElementById("pairs-summary");
 
-  if (!container) return;
+  if (!container || !list || !summary) return;
 
-  const { teamA, teamB } = result;
+  list.innerHTML = "";
 
-  const sumA = teamA.reduce(
-    (sum, id) => sum + getPlayerById(id).rating,
-    0
-  );
-  const sumB = teamB.reduce(
-    (sum, id) => sum + getPlayerById(id).rating,
-    0
-  );
+  const pairSums = [];
 
-  teamAList.innerHTML = "";
-  teamBList.innerHTML = "";
+  result.pairs.forEach((pair, index) => {
+    const [id1, id2] = pair;
+    const p1 = getPlayerById(id1);
+    const p2 = getPlayerById(id2);
 
-  teamA.forEach((id) => {
-    const p = getPlayerById(id);
+    const ratingSum = p1.rating + p2.rating;
+    pairSums.push(ratingSum);
+
     const li = document.createElement("li");
-    li.textContent = `${p.name} (${p.rating})`;
-    teamAList.appendChild(li);
+    li.innerHTML = `
+      <span>Pair ${index + 1}: ${p1.name} (${p1.rating}) &amp; ${p2.name} (${p2.rating})</span>
+      <span class="label">Total: ${ratingSum}</span>
+    `;
+    list.appendChild(li);
   });
 
-  teamB.forEach((id) => {
-    const p = getPlayerById(id);
-    const li = document.createElement("li");
-    li.textContent = `${p.name} (${p.rating})`;
-    teamBList.appendChild(li);
-  });
-
-  teamARatingEl.textContent = sumA;
-  teamBRatingEl.textContent = sumB;
-  diffEl.textContent = `Rating difference: ${Math.abs(sumA - sumB)} (lower is better)`;
+  if (pairSums.length > 0) {
+    const maxSum = Math.max(...pairSums);
+    const minSum = Math.min(...pairSums);
+    summary.textContent = `Strongest pair total: ${maxSum}, weakest pair total: ${minSum}, spread: ${maxSum - minSum} (lower is better).`;
+  } else {
+    summary.textContent = "";
+  }
 
   container.style.display = "block";
 }
@@ -354,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
     recordMatchForm.reset();
   });
 
-  // Generate teams
+  // Generate doubles teams
   const generateTeamsBtn = document.getElementById("generate-teams-btn");
   generateTeamsBtn.addEventListener("click", () => {
     const container = document.getElementById("teams-player-list");
@@ -363,18 +365,18 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter((cb) => cb.checked)
       .map((cb) => cb.value);
 
-    if (selected.length < 4) {
-      alert("Select at least 4 players.");
+    if (selected.length < 2) {
+      alert("Select at least 2 players.");
       return;
     }
     if (selected.length % 2 !== 0) {
-      alert("Select an even number of players for balanced teams.");
+      alert("Select an even number of players to create doubles teams.");
       return;
     }
 
     try {
-      const result = generateBalancedTeams(selected);
-      renderGeneratedTeams(result);
+      const result = generateBalancedPairs(selected);
+      renderGeneratedPairs(result);
     } catch (err) {
       alert(err.message);
     }
